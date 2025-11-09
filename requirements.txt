@@ -1,0 +1,16 @@
+black==25.1.0
+flake8-isort==6.1.2
+flake8-pyproject==1.2.3
+flake8==6.1.0
+mypy==1.9.0
+psycopg2==2.9.10
+pydocstyle==6.3.0
+pydoctest==0.2.1
+pylint==3.3.8
+pytest==8.4.1
+nltk==3.5
+numpy==1.26.4
+spacy-conll==4.0.1
+spacy-udpipe==1.0.0
+spacy==3.8.7
+stanza==1.10.1
