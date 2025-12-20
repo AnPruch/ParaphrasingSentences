@@ -1,12 +1,8 @@
 {
     "parser": "google",
     "include_paths": [
-        "**/*.py"
-    ],
-    "exclude_paths": [
-        "venv/**/*.py",
-        "venv\\**\\*.py",
-        "**/.*/**/*.py"
+        "../src/*.py",
+        "../tests/*.py"
     ],
     "fail_on_missing_docstring": true,
     "fail_on_missing_summary": true,
