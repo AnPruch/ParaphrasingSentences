@@ -5,27 +5,9 @@ on:
     branches: [ main ]
 
 jobs:
-  install-dependencies:
-    name: Installing Dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.11
-      - name: Install Dependencies
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          export PYTHONPATH=$(pwd)
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
   pylint:
     name: Code Style Check
     runs-on: ubuntu-latest
-    needs: [ install-dependencies ]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.11
@@ -35,12 +17,16 @@ jobs:
         
       - name: Run Pylint
         run: |
+          python -m venv venv
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  
           python -m pylint $(git ls-files '*.py')
 
   black:
     name: Black Check
     runs-on: ubuntu-latest
-    needs: [ install-dependencies ]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.11
@@ -50,12 +36,16 @@ jobs:
         
       - name: Run Black
         run: |
+          python -m venv venv
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
           python -m black --check --config pyproject.toml $(git ls-files '*.py')
 
   mypy:
     name: MyPy Check
     runs-on: ubuntu-latest
-    needs: [ install-dependencies ]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.11
@@ -65,12 +55,16 @@ jobs:
         
       - name: Run MyPy
         run: |
+          python -m venv venv
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
           python -m mypy $(git ls-files '*.py')
 
   flake8:
     name: Flake8 Check
     runs-on: ubuntu-latest
-    needs: [ install-dependencies ]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.11
@@ -80,12 +74,16 @@ jobs:
         
       - name: Run Flake8
         run: |
+          python -m venv venv
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
           python -m flake8 $(git ls-files '*.py')
 
   pydocstyle:
     name: Docstrings Check
     runs-on: ubuntu-latest
-    needs: [ install-dependencies ]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.11
@@ -95,12 +93,16 @@ jobs:
         
       - name: Running PyDocTest
         run: |
+          python -m venv venv
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
           python -m pydoctest --config pydoctest.json
 
   tests:
     name: Running Tests
     runs-on: ubuntu-latest
-    needs: [ install-dependencies ]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.11
@@ -109,4 +111,9 @@ jobs:
           python-version: 3.11
       - name: Run Tests
         run: |
+          python -m venv venv
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
           python -m pytest tests
