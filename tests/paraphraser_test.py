@@ -1,23 +1,14 @@
 """
-Test for the paraphraser class
+Tests for the paraphraser class.
 """
-
-import json
+import shutil
 import unittest
 from pathlib import Path
-import shutil
-import logging
 
-import pytest
-
-from src.paraphraser import ParaphrasingTransformer, MODEL_PATH
-
+import torch
 from transformers import PegasusTokenizer
 
-
-logger = logging.getLogger("../src/paraphrazer")
-
-logging.basicConfig(level=logging.INFO)
+from src.paraphraser import MODEL_PATH, ParaphrasingTransformer
 
 
 class ParaphrasingTransformerTest(unittest.TestCase):
@@ -40,6 +31,7 @@ class ParaphrasingTransformerTest(unittest.TestCase):
         """
         sentences = ["This is an example sentence", "Each sentence is converted"]
         number_of_paraphrases = 5
+        torch.manual_seed(0)
         result = self.model.paraphrase_sentences(sentences, number_of_paraphrases)
 
         expected = [
@@ -57,13 +49,32 @@ class ParaphrasingTransformerTest(unittest.TestCase):
 
         self.assertListEqual(result, expected)
 
-        def test_paraphrase_sentences_invalid_input(self) -> None:
-            """
-            Output check for the paraphrasing method.
-            """
-            bad_inputs = [0, True, {}, (), "string"]
-            for bad_input in bad_inputs:
-                self.assertIsNone(self.model.paraphrase_sentences(bad_input))
+    def test_paraphrase_sentences_invalid_input(self) -> None:
+        """
+        Input check for the paraphrasing method.
+        """
+        bad_sentences_lists = [0, 3.14, True, {}, (), "string"]
+        bad_numbers_of_paraphrases = [0, 3.14, False, {}, (), [], "string"]
+        for bad_list in bad_sentences_lists:
+            self.assertIsNone(self.model.paraphrase_sentences(bad_list, 1))
+
+        for bad_number in bad_numbers_of_paraphrases:
+            self.assertIsNone(self.model.paraphrase_sentences(["sentence"], bad_number))
+
+    def test_paraphrase_sentences_return_type(self) -> None:
+        """
+        Output check for the paraphrasing method.
+        """
+        result = self.model.paraphrase_sentences(["sentence1"], 1)
+        self.assertIsInstance(result, list)
+        for potential_sentence in result:
+            self.assertIsInstance(potential_sentence, str)
+
+    def test_paraphrase_sentences_number_of_paraphrases(self) -> None:
+        """
+        Output check for number of paraphrases returned by the paraphrasing method.
+        """
+        self.assertEqual(len(self.model.paraphrase_sentences(["sentence1"], 3)), 3)
 
     def tearDown(self):
-        shutil.rmtree(self.test_path)
+        shutil.rmtree(self.test_path.parent)

@@ -1,13 +1,7 @@
+import logging
+
 import torch
 from transformers import PegasusForConditionalGeneration, PegasusTokenizer
-import logging
-import json
-from pathlib import Path
-
-
-logger = logging.getLogger("../src/paraphrazer")
-
-logging.basicConfig(level=logging.INFO)
 
 MODEL_PATH = "tuner007/pegasus_paraphrase"
 
@@ -27,13 +21,31 @@ class ParaphrasingTransformer:
             model_path (str): Path for downloading the model.
             tokenizer (PegasusTokenizer): Tokenizer for the paraphrasing model.
         """
-        self.model = PegasusForConditionalGeneration.from_pretrained(MODEL_PATH).to(TORCH_DEVICE)
-        self.tokenizer = PegasusTokenizer.from_pretrained(MODEL_PATH)
+        self.model = PegasusForConditionalGeneration.from_pretrained(model_path).to(TORCH_DEVICE)
+        self.tokenizer = tokenizer.from_pretrained(model_path)
 
     def paraphrase_sentences(
-        self, input_sentences: list[str], num_return_sequences: int
-    ) -> list[str]:
-        """ """
+        self, input_sentences: list[str], num_paraphrases: int
+    ) -> list[str] | None:
+        """
+        Paraphrase the sentences.
+
+        Args:
+            input_sentences (list[str]): Sentences to paraphrase.
+            num_paraphrases (int): Number of paraphrases to create total
+            (including the initial phrases).
+
+        Returns:
+            list[str] | None: Paraphrased sentences. None in case of corrupt arguments.
+        """
+        if not (
+            isinstance(input_sentences, list)
+            and all(isinstance(sent, str) for sent in input_sentences)
+            and isinstance(num_paraphrases, int)
+            and num_paraphrases > 0
+        ):
+            return None
+
         batch = self.tokenizer(
             input_sentences, truncation=True, padding="longest", max_length=100, return_tensors="pt"
         ).to(TORCH_DEVICE)
@@ -42,38 +54,11 @@ class ParaphrasingTransformer:
             **batch,
             max_length=100,
             num_beams=8,
-            num_return_sequences=num_return_sequences,
+            num_return_sequences=num_paraphrases,
             temperature=1.5,
         )
 
-        paraphrised_sentences = self.tokenizer.batch_decode(translated, skip_special_tokens=True)
+        paraphrased_sentences = self.tokenizer.batch_decode(translated, skip_special_tokens=True)
 
-        return paraphrised_sentences
-
-    def save2json(sentences: list[str], file_path: Path, number_of_paraphrases) -> None:
-        grouped_sentences = {}
-        for index in range(0, len(sentences), number_of_paraphrases):
-            grouped_sentences[sentences[index]] = sentences[
-                index + 1 : index + number_of_paraphrases
-            ]
-
-        with open(file_path, "w") as file:
-            json.dump(grouped_sentences, file, indent=4)
-
-
-def main():
-    """
-    Running the generation
-    """
-    model = ParaphrasingTransformer(MODEL_PATH, PegasusTokenizer)
-    sentences = ["This is an example sentence", "Each sentence is converted"]
-    number_of_paraphrases = 5
-    result = model.paraphrase_sentences(sentences, number_of_paraphrases)
-
-    logger.info(result)
-
-    model.save2json(result, Path("src/assets/paraphrased_sentences.json"), number_of_paraphrases)
-
-
-if __name__ == "__main__":
-    main()
+        if paraphrased_sentences:
+            return paraphrased_sentences
