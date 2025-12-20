@@ -16,7 +16,6 @@ jobs:
           python-version: 3.11
       - name: Install Dependencies
         run: |
-          ls -la venv
           source venv/bin/activate
           export PYTHONPATH=$(pwd)
           python -m pip install --upgrade pip
