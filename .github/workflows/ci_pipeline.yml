@@ -34,6 +34,7 @@ jobs:
         
       - name: Run Pylint
         run: |        
+          python -m venv venv
           source venv/bin/activate
           export PYTHONPATH=$(pwd)  
           python -m pylint $(git ls-files '*.py')
