@@ -34,9 +34,7 @@ jobs:
           python-version: 3.11
         
       - name: Run Pylint
-        run: |        
-          source venv/bin/activate
-          export PYTHONPATH=$(pwd)  
+        run: |
           python -m pylint $(git ls-files '*.py')
 
   black:
@@ -52,8 +50,6 @@ jobs:
         
       - name: Run Black
         run: |
-          source venv/bin/activate
-          export PYTHONPATH=$(pwd)
           python -m black --check --config pyproject.toml $(git ls-files '*.py')
 
   mypy:
@@ -69,8 +65,6 @@ jobs:
         
       - name: Run MyPy
         run: |
-          source venv/bin/activate
-          export PYTHONPATH=$(pwd)
           python -m mypy $(git ls-files '*.py')
 
   flake8:
@@ -86,8 +80,6 @@ jobs:
         
       - name: Run Flake8
         run: |
-          source venv/bin/activate
-          export PYTHONPATH=$(pwd)
           python -m flake8 $(git ls-files '*.py')
 
   pydocstyle:
@@ -103,8 +95,6 @@ jobs:
         
       - name: Running PyDocTest
         run: |
-          source venv/bin/activate
-          export PYTHONPATH=$(pwd)
           python -m pydoctest --config pydoctest.json
 
   tests:
@@ -119,6 +109,4 @@ jobs:
           python-version: 3.11
       - name: Run Tests
         run: |
-          source venv/bin/activate
-          export PYTHONPATH=$(pwd)
           python -m pytest tests
