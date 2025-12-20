@@ -16,6 +16,9 @@ jobs:
           python-version: 3.11
       - name: Install Dependencies
         run: |
+          ls -la venv
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
@@ -31,7 +34,9 @@ jobs:
           python-version: 3.11
         
       - name: Run Pylint
-        run: |          
+        run: |        
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)  
           python -m pylint $(git ls-files '*.py')
 
   black:
@@ -47,6 +52,8 @@ jobs:
         
       - name: Run Black
         run: |
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
           python -m black --check --config pyproject.toml $(git ls-files '*.py')
 
   mypy:
@@ -62,6 +69,8 @@ jobs:
         
       - name: Run MyPy
         run: |
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
           python -m mypy $(git ls-files '*.py')
 
   flake8:
@@ -77,6 +86,8 @@ jobs:
         
       - name: Run Flake8
         run: |
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
           python -m flake8 $(git ls-files '*.py')
 
   pydocstyle:
@@ -92,6 +103,8 @@ jobs:
         
       - name: Running PyDocTest
         run: |
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
           python -m pydoctest --config pydoctest.json
 
   tests:
@@ -104,6 +117,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.11
-      - name: Running Tests
+      - name: Run Tests
         run: |
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
           python -m pytest tests
