@@ -1,6 +1,7 @@
 """
 Paraphraser module.
 """
+
 import torch
 from transformers import PegasusForConditionalGeneration, PegasusTokenizer
 

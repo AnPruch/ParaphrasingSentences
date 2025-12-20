@@ -1,6 +1,7 @@
 """
 Example logic for the project.
 """
+
 import logging
 from pathlib import Path
 
