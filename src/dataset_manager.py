@@ -1,6 +1,7 @@
 """
 Dataset Manager module.
 """
+
 import json
 from pathlib import Path
 
@@ -25,7 +26,7 @@ def save2json(sentences: list[str], paraphrased_sentences: list[str], file_path:
     # here, it is important to point out that first paraphrased sentence is
     # the same as the one that was given the model to modify.
 
-    with open(file_path, "w") as file:
+    with open(file_path, "w", encoding="utf-8") as file:
         json.dump(grouped_sentences, file, indent=4)
 
 
@@ -42,7 +43,7 @@ def load_json(file_path: Path, list_view: bool = False) -> dict | list:
     Returns:
         dict | list: Output
     """
-    with open(file_path, 'r', encoding='utf-8') as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         paraphrases = json.load(file)
 
     if not list_view and isinstance(paraphrases, dict):

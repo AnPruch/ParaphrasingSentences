@@ -1,6 +1,7 @@
 """
 Tests for the paraphraser class.
 """
+
 import shutil
 import unittest
 from pathlib import Path

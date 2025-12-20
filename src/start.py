@@ -30,7 +30,8 @@ def main():
     logger.info(result)
 
     paraphrased_path = Path("src/assets/paraphrased_sentences.json")
-    save2json(sentences, result, paraphrased_path)
+    if result:
+        save2json(sentences, result, paraphrased_path)
 
     loaded_paraphrases = load_json(paraphrased_path)
     logger.info("")

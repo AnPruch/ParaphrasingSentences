@@ -1,5 +1,6 @@
-import logging
-
+"""
+Paraphraser module.
+"""
 import torch
 from transformers import PegasusForConditionalGeneration, PegasusTokenizer
 
@@ -62,3 +63,4 @@ class ParaphrasingTransformer:
 
         if paraphrased_sentences:
             return paraphrased_sentences
+        return None
