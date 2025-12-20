@@ -16,6 +16,7 @@ jobs:
           python-version: 3.11
       - name: Install Dependencies
         run: |
+          python -m venv venv
           source venv/bin/activate
           export PYTHONPATH=$(pwd)
           python -m pip install --upgrade pip
@@ -34,7 +35,6 @@ jobs:
         
       - name: Run Pylint
         run: |        
-          python -m venv venv
           source venv/bin/activate
           export PYTHONPATH=$(pwd)  
           python -m pylint $(git ls-files '*.py')
