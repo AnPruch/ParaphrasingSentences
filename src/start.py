@@ -7,8 +7,11 @@ from pathlib import Path
 
 from transformers import PegasusTokenizer
 
-from src.dataset_manager import load_json, save2json
-from src.paraphraser import MODEL_PATH, ParaphrasingTransformer
+from src.dataset_manager import load_json, save2json  # from .dataset_manager import load_json, save2json
+from src.paraphraser import MODEL_PATH, ParaphrasingTransformer  # from .paraphraser import MODEL_PATH, ParaphrasingTransformer
+
+# Или вообще (если бы добавили модуль, например my_module):
+# from .my_module import load_json, save2json, MODEL_PATH, ParaphrasingTransformer
 
 logger = logging.getLogger("../src/start")
 

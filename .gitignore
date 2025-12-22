@@ -1,3 +1,10 @@
+# В игнор лучше не добавлять лишние строки "на всякий случай". Только то, что реально нужно заигнорить в вашем проекте.
+# Вместо бездумного копирования шаблонов, вам нужно было добавить сюда только:
+#__pycache__/
+#.venv/
+#.vscode/
+#.github/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -186,7 +193,7 @@ cython_debug/
 #  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
 #  and can be added to the global gitignore or merged into this file. However, if you prefer, 
 #  you could uncomment the following to ignore the entire vscode folder
-# .vscode/
+# .vscode/  # А вот это как раз нужно было заигнорить
 
 # Ruff stuff:
 .ruff_cache/
